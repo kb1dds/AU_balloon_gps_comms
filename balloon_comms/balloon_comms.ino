@@ -28,6 +28,11 @@
 // this is a large buffer for replies
 char replybuffer[255];
 
+// Muon detector data
+int muon_count;
+double temperature;
+char muon_timestamp[256]; 
+
 #include <SoftwareSerial.h>
 
 SoftwareSerial fonaSS = SoftwareSerial(FONA_TX, FONA_RX);
@@ -40,6 +45,8 @@ void setup() {
 
   Serial.begin(115200);
   Serial.println(F("Comms initialization..."));
+
+  // TBD Set up muon detector handler
 
   fonaSerial->begin(4800);
   if (! fona.begin(*fonaSerial)) {
@@ -94,9 +101,8 @@ void loop() {
 
   // Parse the gpsdata fields TBD
 
-  // Query Muon detector and other sensors
-
-  // Bundle text message
+  // Bundle text message with ...
+  // timestamp, lat, lon, alt, muon count, muon temp, GPS temp (if present)
   sprintf(message,""); // TBD Using sprintf.  Beware.
 
   // Transmit text message
@@ -105,3 +111,5 @@ void loop() {
     Serial.println(F("Failed to transmit SMS"));
   
 }
+
+// TBD: muon detector interrupt handler (Serial input; need to wait for serial messages to arrive, and parse them as they do)
